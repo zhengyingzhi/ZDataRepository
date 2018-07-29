@@ -1,10 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="zdata_repository.c" />
+    <ClInclude Include="zdata_repository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zdr_common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zdata_struct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="zdata_repository.h" />
-    <ClInclude Include="zdr_common.h" />
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{5dec028d-2a58-4eaa-b240-b5a9e4bcc5aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{81130e62-d007-45f6-a183-c677b06b6716}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="zdata_repository.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zdata_load.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
