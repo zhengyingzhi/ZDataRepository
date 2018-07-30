@@ -10,6 +10,9 @@
     <ClInclude Include="zdata_struct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="zdata_load.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

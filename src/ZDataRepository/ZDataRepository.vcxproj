@@ -39,6 +39,7 @@
     <ClCompile Include="zdata_repository.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="zdata_load.h" />
     <ClInclude Include="zdata_repository.h" />
     <ClInclude Include="zdata_struct.h" />
     <ClInclude Include="zdr_common.h" />

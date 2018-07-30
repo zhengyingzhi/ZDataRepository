@@ -14,37 +14,41 @@
 
 #pragma pack(push,1)
 
-/* zdata bar 数据
- * 日线/分钟
+/* zdata bar 鏁版嵁
+ * 鏃ョ嚎/鍒嗛挓
  */
 struct zdatabar_s
 {
     char        Instrument[32];
-    double      OpenPrice;
-    double      ClosePrice;
-    double      HighPrice;
-    double      LowPrice;
+    float       OpenPrice;
+    float       HighPrice;
+    float       LowPrice;
+    float       ClosePrice;
+    float       SettlePrice;        // for Future
+    float       OpenInterest;       // for Future
+    float       AdjustFactor;       // for Equity
+    uint32_t    Flag;
     uint64_t    Volume;
     uint64_t    Turnover;
-    uint64_t    Time;
+    uint64_t    DateTime;
     uint64_t    Reserve;
-    float       AdjustFactor;
-    uint32_t    Flag;
 };
 
 typedef struct zdatabar_s zdatabar_t;
 
 struct zdatabar_index_s
 {
-    uint32_t    IndexInstrument;
-    uint32_t    IndexOpenPrice;
-    uint32_t    IndexClosePrice;
-    uint32_t    IndexHighPrice;
-    uint32_t    IndexLowPrice;
-    uint32_t    IndexVolume;
-    uint32_t    IndexTurnover;
-    uint32_t    IndexAdjustFactor;
-    uint32_t    IndexTime;
+    int32_t     IndexInstrument;
+    int32_t     IndexOpenPrice;
+    int32_t     IndexHighPrice;
+    int32_t     IndexLowPrice;
+    int32_t     IndexClosePrice;
+    int32_t     IndexSettlePrice;
+    int32_t     IndexOpenInterest;
+    int32_t     IndexAdjustFactor;
+    int32_t     IndexVolume;
+    int32_t     IndexTurnover;
+    int32_t     IndexDateTime;
 };
 typedef struct zdatabar_index_s zdatabar_index_t;
 
@@ -53,7 +57,7 @@ typedef struct zdatabar_index_s zdatabar_index_t;
 
 
 //////////////////////////////////////////////////////////////////////////
-/* 行情数组
+/* 琛屾儏鏁扮粍
  */
 struct zdatavec_s
 {
@@ -69,15 +73,15 @@ typedef struct zdatavec_s zdatavec_t;
 #include <ZToolLib/ztl_palloc.h>
 struct zdatatable_s
 {
-    zdatavec_t* Table;
-    uint32_t    Size;
-    //ztl_pool_t* Pool;
-    void*       Pool;           // ztl_pool_t type
+    zdatavec_t**    Table;
+    uint32_t        Size;
+    //ztl_pool_t*    Pool;
+    void*           Pool;       // ztl_pool_t type
 };
 typedef struct zdatatable_s zdatatable_t;
 
 
-void zdata_set_csv_index(zdatabar_index_t* indexs);
+void zdata_csv_index_init(zdatabar_index_t* indexs);
 
 
 #endif//_ZDATA_STRUCT_H_
