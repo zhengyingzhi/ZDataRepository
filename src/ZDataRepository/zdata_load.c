@@ -133,7 +133,7 @@ static int _zdata_file_size(const char* filename)
     return size;
 }
 
-static int _zdata_file_to_shm(ztl_shm_t** ppshm, const char* datapath, bool readonly)
+static int _zdata_file_to_shm(ztl_shm_t** ppshm, const char* filepath, bool readonly)
 {
     int openOrCreate;
     int accessMode;
@@ -149,13 +149,13 @@ static int _zdata_file_to_shm(ztl_shm_t** ppshm, const char* datapath, bool read
 
     int rv;
     ztl_shm_t*  zshm;
-    zshm = ztl_shm_create(datapath, openOrCreate, accessMode, false);
+    zshm = ztl_shm_create(filepath, openOrCreate, accessMode, false);
     if (!zshm) {
         return -1;
     }
 
     // FIX the size!!
-    int64_t size = _zdata_file_size(datapath);
+    int64_t size = _zdata_file_size(filepath);
     rv = ztl_shm_truncate(zshm, size);
     if (rv != 0) {
         return -2;
@@ -171,7 +171,7 @@ static int _zdata_file_to_shm(ztl_shm_t** ppshm, const char* datapath, bool read
     return 0;
 }
 
-int zdata_load_from_csv_file(zdatavec_t** ppdvec, const char* datapath, zdatabar_index_t* indexs)
+int zdata_load_from_csv_file(zdatavec_t** ppdvec, const char* filepath, zdatabar_index_t* indexs)
 {
     if (indexs)
     {
@@ -181,7 +181,7 @@ int zdata_load_from_csv_file(zdatavec_t** ppdvec, const char* datapath, zdatabar
     int         rv;
     ztl_shm_t*  zshm;
     void*       paddr;
-    rv = _zdata_file_to_shm(&zshm, datapath, true);
+    rv = _zdata_file_to_shm(&zshm, filepath, true);
     if (rv != 0) {
         return -1;
     }
@@ -288,3 +288,9 @@ int zdata_save_to_binary_file(const char* datapath, const zdatavec_t* dvec)
     return 0;
 }
 
+
+
+
+void zdata_dvec_reset(zdatavec_t* dvec)
+{
+}
