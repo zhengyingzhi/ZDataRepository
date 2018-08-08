@@ -101,10 +101,15 @@ typedef struct zdatabar_index_s zdatabar_index_t;
 
 
 //////////////////////////////////////////////////////////////////////////
-/* 行情数组
+#include <ZToolLib/ztl_array.h>
+#include <ZToolLib/ztl_map.h>
+#include <ZToolLib/ztl_palloc.h>
+
+/* 行情数组，一组指针bardata的指针
  */
 struct zdatavec_s
 {
+    ztl_array_t     Datas;      // array object zdatabar_t*
     zdatabar_t**    Datas;      // array object
     uint32_t        Count;      // array size
     uint32_t        Capacity;
@@ -114,6 +119,62 @@ struct zdatavec_s
     void*           Pool;       // ztl_pool_t type
 };
 typedef struct zdatavec_s zdatavec_t;
+
+
+/* 时间与该时间对应的所有产品的行情map
+ */
+struct ztime2assets_s
+{
+    int64_t     bartime;        // the time of the bar data
+    ztl_map_t*  asset2bars;     // <asset_hashid, zdatabar*>
+};
+typedef struct ztime2assets_s ztime2assets_t;
+
+/* 品种与该品种对应的所有时间序列的数据
+ */
+struct zassets2bars_s
+{
+    ztl_map_t*  asset2bars;     // <asset_hashid, ztl_array_t>
+};
+typedef struct zassets2bars_s zassets2bars_t;
+
+
+
+/* 表示所有的bar数据，并提供丰富的接口访问数据
+ * a. 按时间访问
+ * b. 按品种访问
+ */
+struct zbars_s
+{
+    char            filename[256];
+    int64_t         start_time;
+    int64_t         end_time;
+    ztl_pool_t*     pool;
+
+    ztl_array_t     raw_bars;               // 原始数据
+    ztl_array_t     time_assets_map;        // 数组每个元素为时间和该时间对应的所有产品的bar数据
+    ztl_map_t*      assets_time_map;        // 每个产品和该产品对应的所有bar数据(一个时间序列的array)
+};
+typedef struct zbars_s zbars_t;
+
+
+/* 数据访问获取，每次获取数据时，进行一些指针拷贝(非数据拷贝)
+ */
+struct zdataframe_s
+{
+    int64_t         start_time;
+    int64_t         end_time;
+    ztl_pool_t*     pool;
+
+    uint32_t        frequency;      // 数据频率
+    uint32_t        refcount;       // 引用计数，对象不使用是自动删除
+    ztl_map_t*      assets_bars;    // 按时间访问时的
+    ztl_array_t     bars;           // 一系列数据指针(若按时间访问，则是一堆产品的bar指针，若按产品访问，则是一堆时间序列的bar指针)
+};
+
+/* 对产品代码进行hash转换，得到 ztl_map_t 的 key */
+uint64_t zlookup_symbol(const char* apstr, int len);
+
 
 #include <ZToolLib/ztl_palloc.h>
 struct zdatatable_s
