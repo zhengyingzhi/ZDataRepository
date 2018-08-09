@@ -198,7 +198,7 @@ int zdata_load_from_csv_file(zdatavec_t** ppdvec, const char* filepath, zdatabar
     dvec = (zdatavec_t*)ztl_pcalloc(pool, sizeof(zdatavec_t));
     dvec->Pool = pool;
     dvec->Capacity = 65536;
-    dvec->Datas = (zdatabar_t**)malloc(sizeof(void*) * dvec->Capacity);
+    ztl_array_init(&dvec->Datas, pool, dvec->Capacity, dvec->Capacity);
 
     // todo: parallel parse the csv lines to databar objects
     zdatabar_t* bardata;
@@ -219,13 +219,8 @@ int zdata_load_from_csv_file(zdatavec_t** ppdvec, const char* filepath, zdatabar
                 printf("csv_line_parse failed at %d\n", dvec->Count);
             break;
         }
-        dvec->Datas[dvec->Count++] = bardata;
 
-        if (dvec->Count >= dvec->Capacity)
-        {
-            dvec->Capacity *= 2;
-            dvec->Datas = (zdatabar_t**)realloc(dvec->Datas, sizeof(void*) * dvec->Capacity);
-        }
+        ztl_array_push_back(&dvec->Datas, bardata);
 
         pcur = _zdata_csv_next_line(line, &len);
     } while (pcur);
@@ -259,20 +254,15 @@ int zdata_load_from_binary_file(zdatavec_t** ppdvec, const char* filepath)
     dvec = (zdatavec_t*)ztl_pcalloc(pool, sizeof(zdatavec_t));
     dvec->Pool = pool;
     dvec->Capacity = 65536;
-    dvec->Datas = (zdatabar_t**)malloc(sizeof(void*) * dvec->Capacity);
+    ztl_array_init(&dvec->Datas, pool, dvec->Capacity, dvec->Capacity);
 
     // directly parse into dvec
     zdatabar_t* bardata;
     bardata = (zdatabar_t*)paddr;
     while (bardata->Instrument[0])
     {
-        dvec->Datas[dvec->Count++] = bardata;
-
-        if (dvec->Count >= dvec->Capacity)
-        {
-            dvec->Capacity *= 2;
-            dvec->Datas = (zdatabar_t**)realloc(dvec->Datas, sizeof(void*) * dvec->Capacity);
-        }
+        void** lpdst = (void**)ztl_array_push(&dvec->Datas);
+        *lpdst = bardata;
 
         // next bar data
         bardata += 1;

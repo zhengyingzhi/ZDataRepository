@@ -110,7 +110,6 @@ typedef struct zdatabar_index_s zdatabar_index_t;
 struct zdatavec_s
 {
     ztl_array_t     Datas;      // array object zdatabar_t*
-    zdatabar_t**    Datas;      // array object
     uint32_t        Count;      // array size
     uint32_t        Capacity;
     uint32_t        RefCount;   // reference count
@@ -193,6 +192,19 @@ void zdata_csv_index_init(zdatabar_index_t* indexs);
 // 可按索引(包括负数)、某段数据、某几行几列的数据
 zdatavec_t* zdata_get_byindex(int index);
 zdatavec_t* zdata_get_bystartend(int start, int end);
+
+
+
+
+//////////////////////////////////////////////////////////////////////////
+/* 处理回测结果
+ * 1. 以时间序列记录持仓、订单、成交  [map<time,[positions, orders, transactions]>]
+ * 2. 以时间序列记录 Cumulative Risks
+ */
+struct zperformance_s
+{
+    int64_t time;
+};
 
 
 #endif//_ZDATA_STRUCT_H_
