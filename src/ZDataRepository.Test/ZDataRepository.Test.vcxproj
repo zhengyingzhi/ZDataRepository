@@ -310,6 +310,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ZDataRepository.Test.c" />
+    <ClCompile Include="zs_trading_calendar.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="zs_broker_api.h" />
+    <ClInclude Include="zs_fake_api.h" />
+    <ClInclude Include="zs_trading_calendar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

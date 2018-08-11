@@ -8,6 +8,9 @@
 
 #include "zdata_struct.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define ZDATA_Ok        0       // ok
 #define ZDATA_Error    -1       // 错误
@@ -68,5 +71,9 @@ void zdata_dvec_reset(zdatavec_t* dvec);
 /* 释放 zdatavec_t 对象的内存
  */
 void zdata_dvec_release(zdatavec_t* dvec);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif//_ZDATA_LOAD_H_INCLUDED_
